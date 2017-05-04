@@ -83,7 +83,7 @@ public abstract class ViewModelAdapter extends RecyclerView.Adapter<ViewModelAda
 
     @Override
     public int getItemViewType(int position) {
-        return mCellInfoMap.get(getItemAt(position).getClass()).mLayoutId;
+        return getCellInfo(getItemAt(position)).mLayoutId;
     }
 
     @Override
@@ -99,8 +99,7 @@ public abstract class ViewModelAdapter extends RecyclerView.Adapter<ViewModelAda
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Object item = getItemAt(position);
-
-        CellInfo cellInfo = mCellInfoMap.get(item.getClass());
+        CellInfo cellInfo = getCellInfo(item);
 
         if (cellInfo.mBindingId != 0) {
             ViewDataBinding binding = holder.getBinding();
@@ -110,7 +109,15 @@ public abstract class ViewModelAdapter extends RecyclerView.Adapter<ViewModelAda
         if (position == getItemCount() - 2) loadMore();
     }
 
-    private static class CellInfo {
+    protected CellInfo getCellInfo(Object object) {
+        for (Map.Entry<Class, CellInfo> entry : mCellInfoMap.entrySet()) {
+            if (entry.getKey().isInstance(object))
+                return entry.getValue();
+        }
+        return null;
+    }
+
+    public static class CellInfo {
         @LayoutRes
         private int mLayoutId;
         private int mBindingId;
