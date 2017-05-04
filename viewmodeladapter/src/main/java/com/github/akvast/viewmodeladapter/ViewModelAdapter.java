@@ -49,12 +49,12 @@ public abstract class ViewModelAdapter extends RecyclerView.Adapter<ViewModelAda
     }
 
     protected void beginUpdates() {
-        mBeginUpdateItemsSize = mItems.size();
+        mBeginUpdateItemsSize = getItemCount();
     }
 
     protected void endUpdates() {
-        int changed = Math.min(mBeginUpdateItemsSize, mItems.size());
-        int diff = Math.max(mBeginUpdateItemsSize, mItems.size()) - changed;
+        int changed = Math.min(mBeginUpdateItemsSize, getItemCount());
+        int diff = Math.max(mBeginUpdateItemsSize, getItemCount()) - changed;
 
         if (diff == 0 && changed > 1) {
             notifyDataSetChanged();
@@ -64,7 +64,7 @@ public abstract class ViewModelAdapter extends RecyclerView.Adapter<ViewModelAda
         if (changed != 0) notifyItemRangeChanged(0, changed);
 
         if (diff > 0) {
-            if (mBeginUpdateItemsSize > mItems.size()) {
+            if (mBeginUpdateItemsSize > getItemCount()) {
                 notifyItemRangeRemoved(changed, diff);
             } else {
                 notifyItemRangeInserted(changed, diff);
@@ -77,9 +77,13 @@ public abstract class ViewModelAdapter extends RecyclerView.Adapter<ViewModelAda
         return mItems.size();
     }
 
+    protected Object getItemAt(int position) {
+        return mItems.get(position);
+    }
+
     @Override
     public int getItemViewType(int position) {
-        return mCellInfoMap.get(mItems.get(position).getClass()).mLayoutId;
+        return mCellInfoMap.get(getItemAt(position).getClass()).mLayoutId;
     }
 
     @Override
@@ -94,14 +98,16 @@ public abstract class ViewModelAdapter extends RecyclerView.Adapter<ViewModelAda
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        CellInfo cellInfo = mCellInfoMap.get(mItems.get(position).getClass());
+        Object item = getItemAt(position);
+
+        CellInfo cellInfo = mCellInfoMap.get(item.getClass());
 
         if (cellInfo.mBindingId != 0) {
             ViewDataBinding binding = holder.getBinding();
-            binding.setVariable(cellInfo.mBindingId, mItems.get(position));
+            binding.setVariable(cellInfo.mBindingId, item);
         }
 
-        if (position == mItems.size() - 2) loadMore();
+        if (position == getItemCount() - 2) loadMore();
     }
 
     private static class CellInfo {

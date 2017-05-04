@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "0.1.0"
+        versionCode 2
+        versionName "0.1.1"
     }
 
     dataBinding {
@@ -36,7 +36,7 @@ ext {
     siteUrl = 'https://github.com/akvast/viewmodeladapter'
     gitUrl = 'https://github.com/akvast/viewmodeladapter.git'
 
-    libraryVersion = '0.1.0'
+    libraryVersion = '0.1.1'
 
     developerId = 'akvast'
     developerName = 'Alexander Kvast'
