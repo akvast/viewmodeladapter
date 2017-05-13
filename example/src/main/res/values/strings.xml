@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="app_name">ViewModelAdapter</string>
+
+    <string name="navigation_title">ViewModelAdapter</string>
+    <string name="navigation_subtitle">example project</string>
+
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+
+</resources>

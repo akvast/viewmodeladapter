@@ -1,1 +1,1 @@
-include ':viewmodeladapter'
+include ':viewmodeladapter', ':example'
